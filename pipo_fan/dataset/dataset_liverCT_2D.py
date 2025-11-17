@@ -96,8 +96,8 @@ class RandomCrop(object):
         new_d_half = new_d >> 1
 
         # Find slices containing segmentation object
-        seg_data = segmentation.get_data()
-        img_data = image.get_data()
+        seg_data = np.asarray(segmentation.dataobj)
+        img_data = np.asarray(image.dataobj)
         if view == 'axial':
             img_data = img_data
             seg_data = seg_data

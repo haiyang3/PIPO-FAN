@@ -518,11 +518,11 @@ if __name__ == "__main__":
     # if not path.isdir(log_dir):
     #     os.makedirs(log_dir)
         
-    checkpoing_dir = path.expanduser('/home/fangx2/data/code/data/spleen/5_fold_cv/fold' + cv + '/tmp/concave')
+    checkpoing_dir = path.expanduser('E:/project/ImageSegmentation/Code/Python/PIPO-FAN/data/preCT_256/lits17/5_fold_cv/fold' + cv + '/tmp/concave')
     if not path.isdir(checkpoing_dir):
         os.makedirs(checkpoing_dir)
         
-    log_dir = path.expanduser('/home/fangx2/data/code/data/spleen/5_fold_cv/fold' + cv + '/tmp/concave')
+    log_dir = path.expanduser('E:/project/ImageSegmentation/Code/Python/PIPO-FAN/data/preCT_256/lits17/5_fold_cv/fold' + cv + '/tmp/concave')
     if not path.isdir(log_dir):
         os.makedirs(log_dir)
     """
@@ -540,8 +540,8 @@ if __name__ == "__main__":
 
     # folder_training = r'/home/fangx2/data/LIver_submit1/data3/training_ras'
     # folder_validation = r'/home/fangx2/data/LIver_submit1/data3/validation_ras'
-    folder_training = '/home/fangx2/data/code/data/spleen/5_fold_cv/fold' + cv + '/training/'
-    folder_validation = '/home/fangx2/data/code/data/spleen/5_fold_cv/fold' + cv + '/validation/'
+    folder_training = 'E:/project/ImageSegmentation/Code/Python/PIPO-FAN/data/preCT_256/lits17/5_fold_cv/fold' + cv + '/training/'
+    folder_validation = 'E:/project/ImageSegmentation/Code/Python/PIPO-FAN/data/preCT_256/lits17/5_fold_cv/fold' + cv + '/validation/'
     # folder_training = r'/home/fangx2/data/code/data/spleen/training'
     # folder_validation = r'/home/fangx2/data/code/data/spleen/validation'
     # folder_training = r'/home/fangx2/data/LIver_submit1/data' + cv + '/training/'
