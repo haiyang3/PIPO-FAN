@@ -411,10 +411,10 @@ def save_checkpoint(state, is_best, log_folder, view='axial',
 class CrossEntropyLoss2d(nn.Module):
     def __init__(self, weight=None, size_average=True):
         super(CrossEntropyLoss2d, self).__init__()
-        self.nll_loss = nn.NLLLoss2d(weight, size_average)
+        self.nll_loss = nn.NLLLoss(weight)
 
     def forward(self, inputs, targets):
-        return self.nll_loss(torch.log(inputs), targets)
+        return self.nll_loss(F.log_softmax(inputs), targets)
     
 # class FocalLoss2d(nn.Module):
 #     def __init__(self, weight=None, size_average=True):
@@ -439,41 +439,41 @@ if __name__ == "__main__":
     cv = args.cv_n
     use_cuda = cuda.is_available()
     
-    checkpoing_dir = path.expanduser('/home/fangx2/mu_or/tmp/sf_134')
+    checkpoing_dir = path.expanduser('/opt/data/private/Project/ImageSegmentation/PIPO-FAN/tmp')
     if not path.isdir(checkpoing_dir):
         os.makedirs(checkpoing_dir)
         
-    log_dir = path.expanduser('/home/fangx2/mu_or/tmp/sf_134')
+    log_dir = path.expanduser('/opt/data/private/Project/ImageSegmentation/PIPO-FAN/tmp')
     if not path.isdir(log_dir):
         os.makedirs(log_dir)
 
     """
     training
     """
-    num_classes = 4
+    num_classes = 14
     num_in_channels = args.slices
     # model = DenseUNet(num_channels = num_in_channels, num_classes = num_classes)
     model = ResUNet(num_in_channels, num_classes)
     # model = UNet(num_in_channels, num_classes)
 
-    resunet_checkpoint = torch.load('/home/fangx2/mu_or/tmp/sf_pr0_1216_dps/resunet_checkpoint_final.pth.tar')
-    resunet_dict = resunet_checkpoint['state_dict']
+    # resunet_checkpoint = torch.load('/home/fangx2/mu_or/tmp/sf_pr0_1216_dps/resunet_checkpoint_final.pth.tar')
+    # resunet_dict = resunet_checkpoint['state_dict']
 
-    model.resnet.load_state_dict(resunet_dict)
+    # model.resnet.load_state_dict(resunet_dict)
 
     optimizer = optim.RMSprop(model.parameters(), lr=args.lr, momentum=args.momentum)
 
-    folder_training_1 = '/home/fangx2/data/LIver_submit1/data3/training_a/'
-    folder_validation_1 = '/home/fangx2/data/LIver_submit1/data3/training_a/'
+    folder_training_1 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/lits17'
+    folder_validation_1 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/lits17'
 
-    folder_training_2 = '/home/fangx2/kits19/training_256_ras_a/'
-    folder_validation_2 = '/home/fangx2/kits19/training_256_ras_a/'
+    folder_training_2 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/kits'
+    folder_validation_2 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/kits'
 
-    folder_training_3 = '/home/fangx2/data/code/data/spleen/training_a/'
-    folder_validation_3 = '/home/fangx2/data/code/data/spleen/training_a/'
+    folder_training_3 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/spleen'
+    folder_validation_3 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/spleen'
 
-    folder_training_4 = '/home/fangx2/BTCV/training_256/'
-    folder_validation_4 = '/home/fangx2/BTCV/validation_256/'
+    folder_training_4 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/btcv'
+    folder_validation_4 = '/opt/data/private/Project/ImageSegmentation/PIPO-FAN/data/preCT_256/btcv'
 
 
     # folder_training = r'/home/fangx2/data/LIver_submit1/dataset_256'
@@ -627,8 +627,9 @@ if __name__ == "__main__":
 
         # train_loss = train(train_loader4, '4', model, criterion, 
         #                     optimizer, epoch, verbose=True)
-                            
-        train_history.append(train_loss)
+
+        train_loss_numpy = [t.cpu().numpy() for t in train_loss]              
+        train_history.append(train_loss_numpy)
         
         # Gradually reducing learning rate
         if epoch % 40 == 0:
@@ -636,7 +637,8 @@ if __name__ == "__main__":
 
         # evaluate on validation set
         val_loss = validate(val_loader4, '4', model, criterion, epoch, verbose=True)
-        val_history.append(val_loss)
+        val_loss_numpy = [t.cpu().numpy() for t in val_loss] 
+        val_history.append(val_loss_numpy)
 
         dice = val_loss[1]
         # remember best prec@1 and save checkpoint
